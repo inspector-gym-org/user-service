@@ -4,8 +4,8 @@ from typing import AsyncGenerator
 from fastapi import FastAPI
 
 from .config import settings
-from .routes import router
 from .database import create_indexes
+from .routes import router
 
 
 @asynccontextmanager

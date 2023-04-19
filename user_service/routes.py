@@ -8,7 +8,7 @@ from .models import User
 router = APIRouter(prefix="/users", tags=["users"])
 
 
-@router.post("/")
+@router.post("/", response_model=User)
 async def create_user(user: User, response: Response) -> User:
     user_json = jsonable_encoder(user)
 

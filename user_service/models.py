@@ -11,6 +11,3 @@ class User(BaseModel):
     username: str | None
 
     created: datetime = Field(default_factory=datetime.now)
-
-    class Config:
-        allow_population_by_field_name = True
