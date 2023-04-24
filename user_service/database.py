@@ -10,6 +10,7 @@ client = AsyncIOMotorClient(
 )
 
 database = client[settings.mongo_database_name]
+users_collection = database["users"]
 
 
 async def create_indexes() -> None:
