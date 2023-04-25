@@ -3,9 +3,14 @@ from fastapi.encoders import jsonable_encoder
 from pymongo.errors import DuplicateKeyError
 
 from .database import users_collection
+from .logging_route import LoggingRoute
 from .models import User
 
-router = APIRouter(prefix="/users", tags=["users"])
+router = APIRouter(
+    prefix="/users",
+    tags=["users"],
+    route_class=LoggingRoute,
+)
 
 
 @router.post("/", response_model=User)
