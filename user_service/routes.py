@@ -7,7 +7,6 @@ from .logging_route import LoggingRoute
 from .models import User
 
 router = APIRouter(
-    prefix="/users",
     tags=["users"],
     route_class=LoggingRoute,
 )
