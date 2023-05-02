@@ -7,6 +7,7 @@ from .logging_route import LoggingRoute
 from .models import User
 
 router = APIRouter(
+    prefix="/users",
     tags=["users"],
     route_class=LoggingRoute,
 )
@@ -26,7 +27,7 @@ async def create_user(user: User, response: Response) -> User:
     return await users_collection.find_one({"telegram_id": user.telegram_id})
 
 
-@router.get("/{telegram_id}", response_model=User)
+@router.get("/{telegram_id}/", response_model=User)
 async def get_user(telegram_id: int) -> User:
     if user := await users_collection.find_one({"telegram_id": telegram_id}):
         return user
