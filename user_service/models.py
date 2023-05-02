@@ -12,3 +12,11 @@ class User(BaseModel):
 
     created: datetime = Field(default_factory=datetime.now)
     updated: datetime = Field(default_factory=datetime.now)
+
+
+class UserCreate(BaseModel):
+    telegram_id: int
+
+    first_name: str
+    last_name: str | None
+    username: str | None

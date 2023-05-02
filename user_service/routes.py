@@ -4,7 +4,7 @@ from pymongo.errors import DuplicateKeyError
 
 from .database import users_collection
 from .logging_route import LoggingRoute
-from .models import User
+from .models import User, UserCreate
 
 router = APIRouter(
     prefix="/users",
@@ -14,10 +14,11 @@ router = APIRouter(
 
 
 @router.post("/", response_model=User)
-async def create_user(user: User, response: Response) -> User:
-    user_json = jsonable_encoder(user)
+async def create_user(user_create: UserCreate, response: Response) -> User:
+    user = User(**user_create.dict())
 
     try:
+        user_json = jsonable_encoder(user)
         await users_collection.insert_one(user_json)
         response.status_code = status.HTTP_201_CREATED
 
