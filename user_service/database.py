@@ -14,4 +14,4 @@ users_collection = database["users"]
 
 
 async def create_indexes() -> None:
-    await database["users"].create_index("telegram_id", unique=True)
+    await users_collection.create_index("telegram_id", unique=True)
