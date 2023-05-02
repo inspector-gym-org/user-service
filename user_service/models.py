@@ -10,7 +10,6 @@ class User(BaseModel):
     last_name: str | None
     username: str | None
 
-    created: datetime = Field(default_factory=datetime.now)
     updated: datetime = Field(default_factory=datetime.now)
 
 

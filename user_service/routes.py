@@ -1,6 +1,5 @@
-from fastapi import APIRouter, HTTPException, Response, status
+from fastapi import APIRouter, HTTPException, status
 from fastapi.encoders import jsonable_encoder
-from pymongo.errors import DuplicateKeyError
 
 from .database import users_collection
 from .logging_route import LoggingRoute
@@ -9,21 +8,15 @@ from .models import User, UserCreate
 router = APIRouter(prefix="/users", tags=["users"], route_class=LoggingRoute)
 
 
-@router.post("/", response_model=User)
-async def create_user(user_create: UserCreate, response: Response) -> User:
+@router.post("/", response_model=User, status_code=status.HTTP_201_CREATED)
+async def create_user(user_create: UserCreate) -> User:
     user = User(**user_create.dict())
 
-    try:
-        user_json = jsonable_encoder(user)
-        await users_collection.insert_one(user_json)
-        response.status_code = status.HTTP_201_CREATED
-
-    except DuplicateKeyError:
-        await users_collection.update_one(
-            {"telegram_id": user.telegram_id},
-            {"$set": user.dict(exclude={"telegram_id", "created"})},
-        )
-        response.status_code = status.HTTP_200_OK
+    await users_collection.update_one(
+        {"telegram_id": user.telegram_id},
+        {"$set": jsonable_encoder(user.dict())},
+        upsert=True,
+    )
 
     return await users_collection.find_one({"telegram_id": user.telegram_id})
 
