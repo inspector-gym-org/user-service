@@ -6,11 +6,7 @@ from .database import users_collection
 from .logging_route import LoggingRoute
 from .models import User, UserCreate
 
-router = APIRouter(
-    prefix="/users",
-    tags=["users"],
-    route_class=LoggingRoute,
-)
+router = APIRouter(prefix="/users", tags=["users"], route_class=LoggingRoute)
 
 
 @router.post("/", response_model=User)
@@ -37,6 +33,4 @@ async def get_user(telegram_id: int) -> User:
     if user := await users_collection.find_one({"telegram_id": telegram_id}):
         return user
 
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-    )
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
