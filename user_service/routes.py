@@ -13,9 +13,7 @@ async def create_user(user_create: UserCreate) -> User:
     user = User(**user_create.dict())
 
     await users_collection.update_one(
-        {"telegram_id": user.telegram_id},
-        {"$set": jsonable_encoder(user.dict())},
-        upsert=True,
+        {"telegram_id": user.telegram_id}, {"$set": jsonable_encoder(user)}, upsert=True
     )
 
     return await users_collection.find_one({"telegram_id": user.telegram_id})
