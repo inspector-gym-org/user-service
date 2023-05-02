@@ -11,3 +11,4 @@ class User(BaseModel):
     username: str | None
 
     created: datetime = Field(default_factory=datetime.now)
+    updated: datetime = Field(default_factory=datetime.now)

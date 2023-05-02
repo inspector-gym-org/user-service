@@ -22,6 +22,10 @@ async def create_user(user: User, response: Response) -> User:
         response.status_code = status.HTTP_201_CREATED
 
     except DuplicateKeyError:
+        await users_collection.update_one(
+            {"telegram_id": user.telegram_id},
+            {"$set": user.dict(exclude={"telegram_id", "created"})},
+        )
         response.status_code = status.HTTP_200_OK
 
     return await users_collection.find_one({"telegram_id": user.telegram_id})
